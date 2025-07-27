@@ -1,0 +1,4 @@
+- name: shared-roles
+  src: git@gshared-roles.git
+  scm: git
+  version: init

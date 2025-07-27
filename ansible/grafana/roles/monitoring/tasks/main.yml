@@ -1,0 +1,54 @@
+- name: Create dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /home/{{ ansible_user }}/monitoring
+    - /home/{{ ansible_user }}/monitoring/cfg
+    - /home/{{ ansible_user }}/monitoring/grafana-data
+
+- name: Deploy config files
+  copy:
+    src: "{{ item }}"
+    dest: /home/{{ ansible_user }}/monitoring/cfg
+  loop:
+    - server-alerts.yml
+    - provisioning
+
+- name: Deploy config templates
+  template:
+    src: "{{ item }}"
+    dest: /home/{{ ansible_user }}/monitoring/cfg
+  loop:
+    - prometheus.yml
+    - grafana.ini
+
+- name: Deploy alertmanager template
+  template:
+    variable_start_string: "<<"
+    variable_end_string:   ">>"
+    src: "{{ item }}"
+    dest: /home/{{ ansible_user }}/monitoring/cfg
+  loop:
+    - alertmanager.yml
+
+- name: Deploy compose template
+  template:
+    src: "{{ item }}"
+    dest: /home/{{ ansible_user }}/monitoring
+  loop:
+    - compose.yml
+
+- name: Download dashboards
+  get_url:
+    url: "{{ item }}"
+    dest: /home/{{ ansible_user }}/monitoring/cfg/provisioning/dashboards
+  loop: "{{ GRAFANA_DASHBOARDS }}"
+
+- name: Restart monitoring services
+  become: true
+  shell: |
+    docker compose stop
+    docker compose up --remove-orphans -d
+  args:
+    chdir: /home/{{ ansible_user }}/monitoring

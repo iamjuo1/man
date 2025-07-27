@@ -1,0 +1,26 @@
+Encrypt:
+	cryptsetup luksFormat /dev/xxx
+
+Open:
+	cryptsetup luksOpen /dev/xxx yyy
+
+Mount:
+	mount -t ext4 /dev/mapper/yyy /mnt
+
+Close:
+	cryptsetup luksClose yyy
+
+Reencrypt:
+	cryptsetup reencrypt /dev/xxx
+
+Add pass:
+	cryptsetup luksAddKey /dev/xxx
+
+Rm pass:
+	cryptsetup luksRemoveKey /dev/xxx
+
+See how many pass:
+	cryptsetup luksDump /dev/xxx
+
+Test pass:
+	cryptsetup open --verbose --test-passphrase /dev/xxx

@@ -1,0 +1,48 @@
+services:
+
+  grafana:
+    image: {{ GRAFANA_IMAGE }}
+    restart: always
+    user: '{{ GRAFANA_USER_ID }}'
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana-data:/var/lib/grafana
+      - ./cfg/grafana.ini:/etc/grafana/grafana.ini
+      - ./cfg/provisioning/datasources/:/etc/grafana/provisioning/datasources/
+      - ./cfg/provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
+    depends_on:
+      - prometheus
+
+  prometheus:
+    image: {{ PROMETHEUS_IMAGE }}
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - ./cfg/prometheus.yml:/prometheus/prometheus.yml
+      - ./cfg/server-alerts.yml:/prometheus/server-alerts.yml
+      - ./cfg/webpage-alerts.yml:/prometheus/webpage-alerts.yml
+    command:
+      - --web.external-url={{ PROM_URL }}
+
+  alertmanager:
+    image: {{ ALERTMANAGER_IMAGE }}
+    restart: always
+    ports:
+      - 9093:9093
+    volumes:
+      - ./cfg/alertmanager.yml:/alertmanager.yml
+    command:
+      - --config.file=/alertmanager.yml
+      - --web.external-url={{ ALERT_URL }}
+
+  node-exporter:
+    image: {{ NODE_EXPORTER_IMAGE }}
+    restart: always
+    # ports:
+    #   - 9100:9100
+    volumes:
+      - /:/rootfs:ro
+    command:
+      - --path.rootfs=/rootfs # For host filesystem metrics.

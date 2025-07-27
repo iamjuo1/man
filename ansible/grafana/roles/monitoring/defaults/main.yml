@@ -1,0 +1,17 @@
+GRAFANA_IMAGE:       grafana/grafana:10.4.2
+PROMETHEUS_IMAGE:    prom/prometheus:v2.51.2
+ALERTMANAGER_IMAGE:  prom/alertmanager:v0.26.0
+NODE_EXPORTER_IMAGE: prom/node-exporter:v1.7.0
+
+GRAFANA_USER_ID: 1000
+GRAFANA_DASHBOARDS:
+  - https://grafana.com/api/dashboards/1860/revisions/36/download
+
+PROM_URL: https://example.dev
+
+ALERT_URL: https://alerts.example.dev
+ALERT_SLACK_CHANNEL: alerts
+ALERT_SLACK_API: https://hooks.slack.com
+
+RULE_FILES:
+  - server-alerts.yml

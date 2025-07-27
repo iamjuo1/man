@@ -1,0 +1,43 @@
+global:
+  scrape_interval:     20s
+  evaluation_interval: 20s
+  external_labels:
+    monitor: Name
+
+rule_files: {{ RULE_FILES }}
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - alertmanager:9093
+
+scrape_configs:
+
+  - job_name: prometheus
+    static_configs:
+      - targets:
+        - localhost:9090
+
+  - job_name: node
+    static_configs:
+
+      - targets: ['10.125.13.103:9100']
+        labels:
+          instance: abc
+
+      - targets: ['10.125.13.102:9100']
+        labels:
+          instance: abc
+
+      - targets: ['10.125.13.101:9100']
+        labels:
+          instance: abc
+
+      - targets: ['10.125.13.100:9100']
+        labels:
+          instance: abc
+
+      - targets: ['node-exporter:9100']
+        labels:
+          instance: self-monitor

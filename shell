@@ -1,0 +1,45 @@
+Dir size:
+	du -sh
+
+Print all users:
+	cat /etc/passwd
+
+Print first column:
+	awk '{print $1}'
+
+Change default shell:
+	chsh
+
+Generate random string:
+	openssl rand -base64 14
+
+Apply patch:
+	patch < no-q.diff
+
+Reverse patch:
+	patch -R < no-q.diff
+
+System birthday:
+	stat / | awk '/Birth: /{print $2}'
+
+mount:
+	doas lsblk -f
+	mount -t 'ext4' /dev/sdb1 /mnt/usb
+	umount /mnt/usb
+
+setup external drive:
+	wipefs -a /dev/sdX
+	cfdisk    /dev/sdX
+	mkfs.ext4 /dev/sdX1
+
+rsync folders (dont use / on source dir):
+	rsync -avP src dest/
+
+convert images:
+	gm mogrify -format webp *.jpg
+
+change MAC:
+	ip link set dev eth0 down
+	ip link set dev eth0 address 00:AD:24:E5:50:F7
+	ip link set dev eth0 up
+	ip link show eth0

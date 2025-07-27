@@ -1,0 +1,5 @@
+- name: Setup monitoring server with Grafana and Prometheus
+  hosts: all
+  roles:
+    - shared-roles/docker
+    - monitoring
