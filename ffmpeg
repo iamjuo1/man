@@ -1,11 +1,11 @@
-Cut audio (flac):
-	ffmpeg -i input.flac -ss 00 -t 260 -c:a copy output.flac
+Cut from begining:
+	ffmpeg -i in.opus -t 00:03:52 -c copy out.opus
 
-Cut video (mkv):
-	ffmpeg -i input.mkv -ss 00 -t 00:03:20 -c:v copy -c:a copy output.mkv
+Cut from later:
+	ffmpeg -i in.flac -ss 00:01:00 -t 00:03:52 -c copy out.flac
 
 Convert audio:
 	ffmpeg -i input.mp3 -c:a libopus -b:a 128k output.opus
 
 Convert video (lossless):
-	ffmpeg -i input.mp4 -c:v copy -c:a copy output.mkv
+	ffmpeg -i input.mp4 -c copy output.mkv
